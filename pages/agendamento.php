@@ -1,6 +1,9 @@
 <?php
+include_once __DIR__ . '/../includes/header.php';
+
 // Conexão com o banco de dados
 require_once __DIR__ . '/../includes/conexao.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome_pet = $_POST["nome_pet"];
@@ -71,5 +74,6 @@ $conn->close();
 
         <input type="submit" value="Agendar">
     </form>
+    <?php include_once '../includes/footer.php';?>
 </body>
 </html>

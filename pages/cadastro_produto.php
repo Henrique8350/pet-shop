@@ -1,4 +1,5 @@
 <?php
+include_once __DIR__ . '/../includes/header.php';
 // Conexão com o banco de dados
 require_once __DIR__ . '/../includes/conexao.php';
 
@@ -63,5 +64,6 @@ $conn->close();
 
         <input type="submit" value="Cadastrar Produto">
     </form>
+    <?php include_once '../includes/footer.php';?>
 </body>
 </html>

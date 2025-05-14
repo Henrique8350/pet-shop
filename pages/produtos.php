@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once __DIR__ . '/../includes/header.php';
 
 // Conexão com o banco de dados
 require_once __DIR__ . '/../includes/conexao.php';
@@ -72,6 +73,6 @@ $conn->close();
             <p>Nenhum produto disponível no momento.</p>
         <?php } ?>
     </div>
-
+    <?php include_once '../includes/footer.php';?>
 </body>
 </html>

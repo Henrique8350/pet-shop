@@ -1,8 +1,11 @@
 <?php
+include_once __DIR__ . '/../includes/header.php';
 // Conexão com o banco de dados
 require_once __DIR__ . '/../includes/conexao.php';
 
-// Verifica se o formulário foi enviado
+$mensagem = '';
+$mensagemTipo = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST["nome"];
     $email = $_POST["email"];
@@ -18,9 +21,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("sssss", $nome, $email, $senha_hash, $telefone, $endereco);
 
     if ($stmt->execute()) {
-        echo "<h3>Cliente cadastrado com sucesso!</h3>";
+        $mensagem = "Cliente cadastrado com sucesso! Redirecionando para login...";
+        $mensagemTipo = "success";
+
+        // Redireciona após 2 segundos
+        header("refresh:2;url=login.php");
     } else {
-        echo "Erro ao cadastrar: " . $stmt->error;
+        $mensagem = "Erro ao cadastrar: " . $stmt->error;
+        $mensagemTipo = "danger";
     }
 
     $stmt->close();
@@ -34,37 +42,40 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Cadastro de Cliente</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        form { max-width: 500px; }
-        label { display: block; margin-top: 10px; }
-        input, textarea {
-            width: 100%; padding: 8px; box-sizing: border-box;
-        }
-        input[type="submit"] {
-            margin-top: 15px; padding: 10px 20px;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h2>Cadastro de Cliente</h2>
-    <form method="post" action="">
-        <label for="nome">Nome:</label>
-        <input type="text" name="nome" id="nome" required>
+    <div class="container mt-5 col-md-6">
+        <h2 class="text-center mb-4">Cadastro de Cliente</h2>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
+        <?php if (!empty($mensagem)): ?>
+            <div class="alert alert-<?= $mensagemTipo ?>"><?= $mensagem ?></div>
+        <?php endif; ?>
 
-        <label for="senha">Senha:</label>
-        <input type="password" name="senha" id="senha" required>
-
-        <label for="telefone">Telefone:</label>
-        <input type="tel" name="telefone" id="telefone">
-
-        <label for="endereco">Endereço:</label>
-        <textarea name="endereco" id="endereco"></textarea>
-
-        <input type="submit" value="Cadastrar">
-    </form>
+        <form method="post" action="">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome:</label>
+                <input type="text" name="nome" id="nome" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" name="email" id="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="senha" class="form-label">Senha:</label>
+                <input type="password" name="senha" id="senha" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefone" class="form-label">Telefone:</label>
+                <input type="tel" name="telefone" id="telefone" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="endereco" class="form-label">Endereço:</label>
+                <textarea name="endereco" id="endereco" class="form-control"></textarea>
+            </div>
+            <input type="submit" value="Cadastrar" class="btn btn-success w-100">
+        </form>
+    </div>
+    <?php include_once '../includes/footer.php';?>
 </body>
 </html>

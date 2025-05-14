@@ -1,4 +1,5 @@
 <?php
+include_once __DIR__ . '/../includes/header.php';
 // Conexão com o banco
 require_once __DIR__ . '/../includes/conexao.php';
 
@@ -99,6 +100,6 @@ $conn->close();
 
         <input type="submit" value="Reservar Serviço">
     </form>
-
+    <?php include_once '../includes/footer.php';?>
 </body>
 </html>

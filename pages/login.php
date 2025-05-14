@@ -1,26 +1,44 @@
 <?php
 session_start();
+include_once __DIR__ . '/../includes/header.php';
 $conn = new mysqli("localhost", "root", "", "petshop_db");
+
+// Verifica conexão
+if ($conn->connect_error) {
+    die("Erro na conexão: " . $conn->connect_error);
+}
+
+$erro = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $senha = $_POST["senha"];
 
-    $sql = "SELECT * FROM clientes WHERE email = '$email' AND senha = '$senha'";
-    $result = $conn->query($sql);
+    // Evita SQL injection
+    $stmt = $conn->prepare("SELECT id, nome, senha FROM clientes WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
-    if ($result->num_rows == 1) {
-        $cliente = $result->fetch_assoc();
-        $_SESSION["cliente_id"] = $cliente["id"];
-        $_SESSION["cliente_nome"] = $cliente["nome"];
-        header("Location: index.php");
-        exit();
+    if ($resultado->num_rows === 1) {
+        $cliente = $resultado->fetch_assoc();
+
+        // Verifica a senha com hash
+        if (password_verify($senha, $cliente["senha"])) {
+            $_SESSION["cliente_id"] = $cliente["id"];
+            $_SESSION["cliente_nome"] = $cliente["nome"];
+            header("Location: ../index.php");
+            exit();
+        } else {
+            $erro = "Senha incorreta.";
+        }
     } else {
-        $erro = "E-mail ou senha incorretos.";
+        $erro = "E-mail não encontrado.";
     }
+
+    $stmt->close();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -31,9 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container mt-5 col-md-4">
         <h2 class="text-center">Login</h2>
-        <?php if (!empty($erro)) { ?>
+        <?php if (!empty($erro)) : ?>
             <div class="alert alert-danger"><?= $erro ?></div>
-        <?php } ?>
+        <?php endif; ?>
         <form method="POST">
             <div class="mb-3">
                 <label>Email:</label>
@@ -47,5 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="cadastro_clientes.php" class="btn btn-link w-100">Não tem conta? Cadastre-se</a>
         </form>
     </div>
+    <?php include_once '../includes/footer.php';?>
 </body>
 </html>
