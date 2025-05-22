@@ -53,34 +53,9 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
+<head class="style_serv">
     <meta charset="UTF-8">
     <title>Reservar Serviço - Pet Shop</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
-        form { background-color: white; padding: 20px; max-width: 600px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        label { display: block; margin-top: 10px; }
-        input, select {
-            width: 100%; padding: 8px; box-sizing: border-box;
-        }
-        input[type="submit"] {
-            margin-top: 15px; padding: 10px 20px;
-            background: #28a745; color: white; border: none;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background: #218838;
-        }
-        .servico-item {
-            background-color: #e9ecef;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-        .servico-item h3 {
-            margin: 0;
-        }
-    </style>
 </head>
 <body>
 

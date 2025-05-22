@@ -26,7 +26,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
+<head class="style_carrinho">
     <meta charset="UTF-8">
     <title>Carrinho</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
