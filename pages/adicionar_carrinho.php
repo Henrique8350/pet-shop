@@ -17,6 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     }
 }
 
+session_start();
+
+if (!isset($_SESSION["cliente_id"])) {
+    // Redireciona para a página de login
+    header("Location: login.php");
+    exit();
+}
+
+
+
 header("Location: produtos.php");
     include_once '../includes/footer.php';
 exit;

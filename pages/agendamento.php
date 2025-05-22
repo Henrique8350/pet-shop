@@ -5,6 +5,17 @@ include_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/conexao.php';
 
 
+session_start();
+
+if (!isset($_SESSION["cliente_id"])) {
+    // Redireciona para a página de login
+    header("Location: login.php");
+    exit();
+}
+
+
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome_pet = $_POST["nome_pet"];
     $nome_dono = $_POST["nome_dono"];
@@ -28,10 +39,25 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="pt-br">
-<head class="style_agen">
+<head>
     <meta charset="UTF-8">
     <title>Agendamento Pet Shop</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; background-color: #f0f8ff; }
+        form { background: #fff; padding: 20px; max-width: 500px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        label { display: block; margin-top: 10px; }
+        input, select {
+            width: 100%; padding: 8px; box-sizing: border-box;
+        }
+        input[type="submit"] {
+            margin-top: 15px; padding: 10px 20px;
+            background: #007BFF; color: white; border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h2 style="text-align:center;">Agendamento para Pet Shop</h2>

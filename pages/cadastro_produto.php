@@ -27,10 +27,25 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="pt-br">
-<head class="style_cad_prod">
+<head>
     <meta charset="UTF-8">
     <title>Cadastro de Produto</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; background-color: #f4f4f4; }
+        form { background: white; padding: 20px; max-width: 500px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        label { display: block; margin-top: 10px; }
+        input, textarea {
+            width: 100%; padding: 8px; box-sizing: border-box;
+        }
+        input[type="submit"] {
+            margin-top: 15px; padding: 10px 20px;
+            background: #28a745; color: white; border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background: #218838;
+        }
+    </style>
 </head>
 <body>
     <h2 style="text-align: center;">Cadastro de Produto</h2>

@@ -14,41 +14,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $senha = $_POST["senha"];
 
-    // Evita SQL injection
-    $stmt = $conn->prepare("SELECT id, nome, senha FROM clientes WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
+    $stmt = $conn->prepare("SELECT id_cliente, nome, senha FROM clientes WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$resultado = $stmt->get_result();
 
-    if ($resultado->num_rows === 1) {
-        $cliente = $resultado->fetch_assoc();
+if ($resultado->num_rows === 1) {
+    $cliente = $resultado->fetch_assoc();
 
-        // Verifica a senha com hash
-        if (password_verify($senha, $cliente["senha"])) {
-            $_SESSION["cliente_id"] = $cliente["id"];
-            $_SESSION["cliente_nome"] = $cliente["nome"];
-            header("Location: ../index.php");
-            exit();
-        } else {
-            $erro = "Senha incorreta.";
-        }
+    if (password_verify($senha, $cliente["senha"])) {
+        $_SESSION["cliente_id"] = $cliente["id_cliente"];
+        $_SESSION["cliente_nome"] = $cliente["nome"];
+        header("Location: perfil.php"); // Redireciona para perfil após login
+        exit();
     } else {
-        $erro = "E-mail não encontrado.";
+        $erro = "Senha incorreta.";
     }
+} else {
+    $erro = "E-mail não encontrado.";
+}
+
 
     $stmt->close();
 }
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-<head class="style_log">
+<head>
     <meta charset="UTF-8">
     <title>Login - Pet Shop</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container mt-5 col-md-4 login-container">
+    <div class="container mt-5 col-md-4">
         <h2 class="text-center">Login</h2>
         <?php if (!empty($erro)) : ?>
             <div class="alert alert-danger"><?= $erro ?></div>
