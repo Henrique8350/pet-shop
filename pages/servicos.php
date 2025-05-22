@@ -42,7 +42,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
+<head class="style_serv">
     <meta charset="UTF-8">
     <title>Reservar Serviço - Pet Shop</title>
     <link rel="stylesheet" href="../css/style.css">

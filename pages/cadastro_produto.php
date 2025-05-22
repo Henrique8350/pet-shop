@@ -27,7 +27,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
+<head class="style_cad_prod">
     <meta charset="UTF-8">
     <title>Cadastro de Produto</title>
     <link rel="stylesheet" href="../css/style.css">
