@@ -84,6 +84,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8" />
     <title>Agendamento Pet Shop</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
     <style>
         /* Reset básico */
         * {
@@ -224,7 +225,10 @@ $conn->close();
         <label for="data_hora">Data e Hora:</label>
         <input type="datetime-local" name="data_hora" id="data_hora" required>
 
+         <img src= "../assets/img/pet/2.png"  class="calendario"  alt=" calendário pet shop"> 
+
         <input type="submit" value="Agendar">
+        
     </form>
 
 <?php include_once '../includes/footer.php'; ?>

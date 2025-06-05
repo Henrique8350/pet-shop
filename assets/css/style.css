@@ -323,5 +323,9 @@ input[type="submit"]:hover {
 }
 
 }
-
+.calendario {
+    width: 400px;
+    border: 2px solid white;
+    border-radius: 10px;
+}
 
