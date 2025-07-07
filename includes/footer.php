@@ -1,65 +1,31 @@
-<footer class="bg-primary text-white pt-4 pb-3 mt-5">
-    <div class="container">
-        <div class="row align-items-start justify-content-between">
+<footer class="bg-primary text-white py-1 mt-5">
+    <div class="container d-flex flex-column flex-md-row justify-content-md-between align-items-center small text-center text-md-start">
 
-            <!-- Informações -->
-            <div class="col-md-5 mb-4 mb-md-0">
-                <h5 class="fw-bold mb-3">© <?= date('Y') ?> - asafegnr</h5>
-                <p class="small mb-2">Todos os direitos reservados.</p>
-
-                <ul class="list-unstyled small">
-                    <li class="mb-2">
-                        <i class="fab fa-whatsapp me-2"></i>
-                        <a href="https://wa.me/5581996827136" target="_blank" class="text-white text-decoration-none fw-semibold">
-                            (81) 99682-7136
-                        </a>
-                    </li>
-                    <li>
-                        <i class="fab fa-github me-2"></i>
-                        <a href="https://github.com/asafegnr" target="_blank" class="text-white text-decoration-none fw-semibold">
-                            github.com/asafegnr
-                        </a>
-                    </li>
-                </ul>
-
-                <p class="small fw-semibold mt-3 mb-1">Colaboradores:</p>
-                <ul class="list-inline small">
-                    <li class="list-inline-item me-3">Asafe</li>
-                    <li class="list-inline-item me-3">Paulo</li>
-                    <li class="list-inline-item me-3">Mariah</li>
-                    <li class="list-inline-item me-3">Edlaine</li>
-                    <li class="list-inline-item me-3">Julia</li>
-                    <li class="list-inline-item">Vitor</li>
-                </ul>
-            </div>
-
-            <!-- Formulário de Feedback -->
-            <div class="col-md-6">
-                <form action="#" method="post" class="needs-validation" novalidate>
-                    <label for="feedback" class="form-label small fw-semibold">Deixe seu feedback:</label>
-                    <textarea id="feedback" name="feedback" rows="3" class="form-control rounded-3 shadow-sm border-0"
-                        placeholder="Sua opinião é importante..." required></textarea>
-                    <div class="invalid-feedback">
-                        Por favor, escreva seu feedback antes de enviar.
-                    </div>
-                    <div class="d-grid mt-3">
-                        <button type="submit" class="btn btn-light fw-semibold">Enviar</button>
-                    </div>
-                </form>
-            </div>
-
+        <div>
+            <span class="fw-bold me-2">© <?= date('Y') ?> - asafegnr</span>
+            <a href="https://wa.me/5581996827136" target="_blank" class="text-white text-decoration-none me-2">
+                <i class="fab fa-whatsapp me-1"></i>(81) 99682-7136
+            </a>
+            <a href="https://github.com/asafegnr" target="_blank" class="text-white text-decoration-none">
+                <i class="fab fa-github me-1"></i>github.com/asafegnr
+            </a>
         </div>
-        <hr class="border-light my-3">
-        <div class="text-center small">
-            <span>Desenvolvido com ❤️ por <strong>asafegnr e equipe</strong></span>
+
+        <div class="mt-2 mt-md-0">
+            <a href="#" class="text-white text-decoration-none fw-semibold" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                Deixe seu Feedback
+            </a>
         </div>
+
+    </div>
+    <hr class="border-light my-1">
+    <div class="text-center small">
+        <span>Desenvolvido com ❤️ por <strong>asafegnr e equipe</strong></span>
     </div>
 </footer>
 
-<!-- Font Awesome (Ícones) -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-<!-- Validação do formulário -->
 <script>
 (() => {
     'use strict'
@@ -88,9 +54,32 @@
         text-decoration: underline;
     }
     footer i {
-        font-size: 1.1rem;
-    }
-    textarea:focus, input:focus {
-        box-shadow: 0 0 0 0.15rem rgba(255, 255, 255, 0.4);
+        font-size: 0.8rem;
     }
 </style>
+
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" id="feedbackModalLabel">Seu Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="modalFeedback" class="form-label">Sua opinião é importante:</label>
+                        <textarea id="modalFeedback" name="feedback" rows="4" class="form-control"
+                            placeholder="Deixe seu feedback aqui..." required></textarea>
+                        <div class="invalid-feedback">
+                            Por favor, escreva seu feedback antes de enviar.
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Enviar Feedback</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
