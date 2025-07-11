@@ -1,41 +1,60 @@
 <?php
 session_start();
-include_once __DIR__ . '/../includes/header.php';
-$conn = new mysqli("localhost", "root", "", "petshop_db");
 
-// Verifica conexão
+// --- INÍCIO DO BLOCO DE PROCESSAMENTO E REDIRECIONAMENTO ---
+
+// Inclua a conexão com o banco de dados aqui, antes de qualquer output,
+// para que $conn esteja disponível para a lógica de login.
+// REMOVA esta linha se seu 'includes/header.php' JÁ INCLUI 'conexao.php'.
+require_once __DIR__ . '/../includes/conexao.php'; 
+
+// Se o seu 'conexao.php' já define e verifica $conn, remova a linha abaixo.
+// $conn = new mysqli("localhost", "root", "", "petshop_db"); 
+
+// Verifica conexão (se 'conexao.php' já faz isso, pode ser redundante aqui)
 if ($conn->connect_error) {
     die("Erro na conexão: " . $conn->connect_error);
 }
 
-$erro = '';
+$erro = ''; // Inicializa a variável de erro
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $senha = $_POST["senha"];
 
     $stmt = $conn->prepare("SELECT id_cliente, nome, senha FROM clientes WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-
-    if ($resultado->num_rows === 1) {
-        $cliente = $resultado->fetch_assoc();
-
-        if (password_verify($senha, $cliente["senha"])) {
-            $_SESSION["cliente_id"] = $cliente["id_cliente"];
-            $_SESSION["cliente_nome"] = $cliente["nome"];
-            header("Location: perfil.php"); // Redireciona para perfil após login
-            exit();
-        } else {
-            $erro = "Senha incorreta.";
-        }
+    if ($stmt === false) { // Adiciona verificação de erro na preparação da query
+        $erro = "Erro na preparação da consulta: " . $conn->error;
     } else {
-        $erro = "E-mail não encontrado.";
-    }
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-    $stmt->close();
+        if ($resultado->num_rows === 1) {
+            $cliente = $resultado->fetch_assoc();
+
+            if (password_verify($senha, $cliente["senha"])) {
+                $_SESSION["cliente_id"] = $cliente["id_cliente"];
+                $_SESSION["cliente_nome"] = $cliente["nome"];
+                
+                // --- REDIRECIONAMENTO AQUI (ANTES DE QUALQUER HTML!) ---
+                header("Location: perfil.php"); // Caminho relativo, perfil.php está na mesma pasta 'pages/'
+                exit(); // Crucial! Termina o script após o redirecionamento
+            } else {
+                $erro = "Senha incorreta.";
+            }
+        } else {
+            $erro = "E-mail não encontrado.";
+        }
+        $stmt->close();
+    }
 }
+$conn->close(); // Fecha a conexão após todo o processamento PHP
+// --- FIM DO BLOCO DE PROCESSAMENTO E REDIRECIONAMENTO ---
+
+// AGORA, e SOMENTE AGORA, incluímos o cabeçalho HTML e renderizamos a página.
+// Isso garante que nenhum HTML seja enviado antes do redirecionamento.
+include_once __DIR__ . '/../includes/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -43,12 +62,81 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8" />
     <title>Login - Pet Shop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Font Awesome para ícones do footer -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
+        /* Variáveis CSS para cores e sombras */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #f9f9f9;
+            --text-color: #333;
+            --highlight-color: #ffc107;
+            --card-shadow: rgba(0, 0, 0, 0.15);
+            --btn-hover-color: #0056b3;
+        }
+
+        /* Estilos da Navbar (copiados e adaptados do index.php) */
+        /* Estes estilos devem estar no seu 'includes/header.php' ou em um CSS global */
+        /* Estou incluindo-os aqui para que o arquivo seja auto-suficiente na demonstração */
+        .navbar {
+            box-shadow: 0 4px 12px var(--card-shadow);
+            min-height: 60px;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+            background-color: var(--primary-color) !important;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1030;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            color: #fff !important;
+            white-space: nowrap;
+            user-select: none;
+        }
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: .5rem 1rem !important;
+        }
+        .nav-link:hover {
+            color: var(--highlight-color) !important;
+        }
+
+        /* Responsividade Navbar */
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background-color: var(--primary-color);
+                padding: 1rem;
+                margin-top: .5rem;
+                border-radius: .5rem;
+            }
+            .nav-item {
+                text-align: center;
+            }
+            .nav-link {
+                padding: .75rem 1rem !important;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding-top: 80px;
+            }
+            .navbar {
+                min-height: 70px;
+            }
+            .navbar-brand {
+                font-size: 1.4rem;
+            }
+        }
+        /* Fim dos estilos da Navbar */
+
+
         /* Estilo do corpo e container de login */
         body {
-            background: #f5f7fa;
+            background-color: var(--secondary-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -79,27 +167,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: #495057;
         }
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color); 
             font-weight: 600;
             padding: 10px;
             transition: background-color 0.3s ease;
         }
         .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+            background-color: var(--btn-hover-color); 
+            border-color: var(--btn-hover-color); 
         }
         .btn-link {
             display: block;
             text-align: center;
             margin-top: 15px;
-            color: #007bff;
+            color: var(--primary-color); 
             font-weight: 600;
             text-decoration: none;
             transition: color 0.3s ease;
         }
         .btn-link:hover {
-            color: #0056b3;
+            color: var(--btn-hover-color); 
             text-decoration: underline;
         }
         .alert-danger {
@@ -114,7 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: #007bff; /* cor do bg-primary */
+            background-color: var(--primary-color); 
             color: white;
             padding: 15px 20px;
             box-shadow: 0 -2px 8px rgba(0,0,0,0.1);

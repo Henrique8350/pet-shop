@@ -21,7 +21,7 @@ session_start();
 
         body {
             background-color: var(--secondary-color);
-            padding-top: 70px;
+            padding-top: 70px; /* Ajuste para acomodar a altura da navbar */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-color);
         }
@@ -29,6 +29,10 @@ session_start();
         /* Navbar */
         .navbar {
             box-shadow: 0 4px 12px var(--card-shadow);
+            /* Altura mínima da navbar para desktop */
+            min-height: 60px; /* Altura padrão para telas maiores */
+            padding-top: .5rem; /* Ajuste do preenchimento vertical */
+            padding-bottom: .5rem; /* Ajuste do preenchimento vertical */
         }
         .navbar-brand {
             font-weight: 700;
@@ -36,14 +40,47 @@ session_start();
             letter-spacing: 1px;
             color: #fff !important;
             user-select: none;
+            /* Garante que o brand não quebre a linha facilmente */
+            white-space: nowrap;
         }
         .nav-link {
             font-weight: 500;
             transition: color 0.3s ease;
+            /* Aumenta o padding para tornar os links mais clicáveis e alargar a área do link */
+            padding: .5rem 1rem !important;
         }
         .nav-link:hover {
             color: var(--highlight-color) !important;
         }
+
+        /* Conteúdo da Navbar para responsividade em telas menores */
+        @media (max-width: 991.98px) { /* Ponto de quebra padrão do Bootstrap para navbar-expand-lg */
+            .navbar-collapse {
+                background-color: var(--primary-color); /* Fundo para o menu colapsado */
+                padding: 1rem;
+                margin-top: .5rem; /* Espaço entre o brand e o menu colapsado */
+                border-radius: .5rem;
+            }
+            .nav-item {
+                text-align: center; /* Centraliza os itens no menu colapsado */
+            }
+            .nav-link {
+                padding: .75rem 1rem !important; /* Mais padding para itens colapsados */
+            }
+        }
+        /* Responsividade para altura da navbar em telas muito pequenas */
+        @media (max-width: 480px) {
+            body {
+                padding-top: 80px; /* Ajusta padding do body para navbar em mobile */
+            }
+            .navbar {
+                min-height: 70px; /* Aumenta um pouco a altura mínima para telas muito pequenas */
+            }
+            .navbar-brand {
+                font-size: 1.4rem; /* Reduz um pouco o tamanho da fonte em telas pequenas */
+            }
+        }
+
 
         /* Cards */
         .card {
@@ -100,31 +137,21 @@ session_start();
             color: #444;
         }
 
-        /* Responsive adjustments */
+        /* Responsive adjustments (gerais, alguns já na navbar) */
         @media (max-width: 768px) {
             .card-img-top {
                 height: 200px;
             }
         }
-        @media (max-width: 480px) {
-            body {
-                padding-top: 100px;
-            }
-            .navbar-brand {
-                font-size: 1.3rem;
-            }
-            .card-title {
-                font-size: 1.2rem;
-            }
-        }
+        /* O media query para max-width: 480px já está na navbar-responsive,
+           então podemos removê-lo daqui se não houver outras regras gerais. */
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">🐾 PetShop</a>
+            <a class="navbar-brand" href="index.php">🐾 PetShop</a> 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -132,13 +159,11 @@ session_start();
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <!-- Links comuns -->
                     <li class="nav-item"><a class="nav-link" href="pages/produtos.php">Produtos</a></li>
                     <li class="nav-item"><a class="nav-link" href="pages/servicos.php">Serviços</a></li>
                     <li class="nav-item"><a class="nav-link" href="pages/carrinho.php">Carrinho</a></li>
                     <li class="nav-item"><a class="nav-link" href="pages/agendamento.php">Agendar</a></li>
 
-                    <!-- Login/Perfil -->
                     <?php if (isset($_SESSION['cliente_id'])): ?>
                         <li class="nav-item">
                             <a class="nav-link text-warning" href="#">Olá, <?= htmlspecialchars($_SESSION['cliente_nome']) ?></a>
@@ -170,16 +195,14 @@ session_start();
         </div>
     </nav>
 
-    <!-- Conteúdo da home -->
     <div class="container text-center">
         <h1>Bem-vindo ao nosso Pet Shop! 🐶🐱</h1>
         <p class="lead">Veja nossos produtos e agende serviços para o seu pet com facilidade!</p>
 
         <div class="row">
-            <!-- Produtos -->
             <div class="col-md-6 mb-4">
                 <div class="card">
-                    <img src="https://via.placeholder.com/500x250?text=Produtos" class="card-img-top" alt="Produtos" />
+                    <img src="/pet-shop/assets/img/produto.jpg" class="card-img-top" alt="Nossos Produtos" />
                     <div class="card-body">
                         <h5 class="card-title">Produtos</h5>
                         <p class="card-text">Rações, brinquedos, acessórios e muito mais.</p>
@@ -188,10 +211,9 @@ session_start();
                 </div>
             </div>
 
-            <!-- Serviços -->
             <div class="col-md-6 mb-4">
                 <div class="card">
-                    <img src="https://via.placeholder.com/500x250?text=Serviços" class="card-img-top" alt="Serviços" />
+                    <img src="/pet-shop/assets/img/servicos.jpg" class="card-img-top" alt="Nossos Serviços" /> 
                     <div class="card-body">
                         <h5 class="card-title">Serviços</h5>
                         <p class="card-text">Banho, tosa, vacinação e consultas veterinárias.</p>
@@ -202,7 +224,6 @@ session_start();
         </div>
     </div>
 
-    <!-- Scripts do Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

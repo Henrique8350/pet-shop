@@ -69,6 +69,60 @@ if (session_status() === PHP_SESSION_NONE) {
                 font-size: 0.9rem;
             }
         }
+        /* Navbar */
+.navbar {
+    box-shadow: 0 4px 12px var(--card-shadow);
+    /* Altura mínima da navbar para desktop */
+    min-height: 60px; /* Altura padrão para telas maiores */
+    padding-top: .5rem; /* Ajuste do preenchimento vertical */
+    padding-bottom: .5rem; /* Ajuste do preenchimento vertical */
+}
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    color: #fff !important;
+    user-select: none;
+    /* Garante que o brand não quebre a linha facilmente */
+    white-space: nowrap;
+}
+.nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+    /* Aumenta o padding para tornar os links mais clicáveis e alargar a área do link */
+    padding: .5rem 1rem !important;
+}
+.nav-link:hover {
+    color: var(--highlight-color) !important;
+}
+
+/* Conteúdo da Navbar para responsividade em telas menores */
+@media (max-width: 991.98px) { /* Ponto de quebra padrão do Bootstrap para navbar-expand-lg */
+    .navbar-collapse {
+        background-color: var(--primary-color); /* Fundo para o menu colapsado */
+        padding: 1rem;
+        margin-top: .5rem; /* Espaço entre o brand e o menu colapsado */
+        border-radius: .5rem;
+    }
+    .nav-item {
+        text-align: center; /* Centraliza os itens no menu colapsado */
+    }
+    .nav-link {
+        padding: .75rem 1rem !important; /* Mais padding para itens colapsados */
+    }
+}
+/* Responsividade para altura da navbar em telas muito pequenas */
+@media (max-width: 480px) {
+    body {
+        padding-top: 80px; /* Ajusta padding do body para navbar em mobile */
+    }
+    .navbar {
+        min-height: 70px; /* Aumenta um pouco a altura mínima para telas muito pequenas */
+    }
+    .navbar-brand {
+        font-size: 1.4rem; /* Reduz um pouco o tamanho da fonte em telas pequenas */
+    }
+}
     </style>
 </head>
 
