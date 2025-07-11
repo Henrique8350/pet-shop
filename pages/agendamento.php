@@ -121,6 +121,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Este POST não é o do AJAX, é d
             $message = "A data ou hora selecionada é inválida ou indisponível. Por favor, verifique.";
             $messageClass = "danger";
         } else {
+            // Reutiliza o limite de vagas definido no topo do arquivo.
+            // Para segurança, pode ser melhor redefinir ou ter um escopo global para $limite_vagas_por_horario
+            // ou passar como parâmetro para uma função de verificação.
+            $limite_vagas_por_horario_form_submit = 1; 
+
             $sql_check_slot = "SELECT COUNT(*) FROM agendamentos WHERE data_hora = ?";
             $stmt_check_slot = $conn->prepare($sql_check_slot);
             $stmt_check_slot->bind_param("s", $data_hora_db_format);
@@ -129,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Este POST não é o do AJAX, é d
             $stmt_check_slot->fetch();
             $stmt_check_slot->close();
 
-            if ($count_slot >= $limite_vagas_por_horario) { 
+            if ($count_slot >= $limite_vagas_por_horario_form_submit) { 
                 $message = "Este horário já está lotado. Por favor, escolha outro.";
                 $messageClass = "danger";
             } else {
@@ -227,6 +232,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { // Este POST não é o do AJAX, é d
             padding-top: .5rem;
             padding-bottom: .5rem;
             background-color: var(--primary-color) !important; /* Garante que a navbar seja azul */
+            position: fixed; /* Mantenha fixo */
+            top: 0;
+            width: 100%;
+            z-index: 1030;
         }
         .navbar-brand {
             font-weight: 700;
